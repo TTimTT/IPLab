@@ -62,3 +62,26 @@ def plot_confusion_matrix(cm,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     
+_tracker_ctor = {'mil': cv2.TrackerMIL_create,
+                 'kcf': cv2.TrackerKCF_create,
+                 'tld': cv2.TrackerTLD_create,
+                 'medianflow': cv2.TrackerMedianFlow_create,
+                 'mosse': cv2.TrackerMOSSE_create,
+                 'goturn': cv2.TrackerGOTURN_create}
+    
+def create_face_tracker(name='KCF'):
+    """
+    Create an instance of a face tracker from a given `name`. The list of available tracker is :
+    
+    ['MIL', 'KCF', 'TLD', 'MedianFlow', 'Mosse', 'GoTurn']
+    
+    :param name: Name of the tracker instance to create
+    :raise: ValueError exception if the name of the tracker do not match anything known.
+    """
+    n = name.lower()
+    ctor = _tracker_ctor.get(n, None)
+    if ctor is None:
+        raise ValueError('Unknown type of tracker')
+    return ctor()
+        
+    
